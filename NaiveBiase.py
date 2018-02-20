@@ -39,7 +39,7 @@ for feature in list(dataset_train.columns.values):
             probabilities[feature][feature_value][class_label] = probability
 print(probabilities)
 
-dataset_test = pd.read_csv('train.csv')
+dataset_test = pd.read_csv('test.csv')
 
 columns = dataset_test.columns.values
 predicted_labels = {}
@@ -50,7 +50,6 @@ for index, row in dataset_test.iterrows():
 
             for class_label in labelsProbability:
                 prob_product = 1
-
                 for feature in columns:
                     feature_value = row[feature]
                     if (feature_value in probabilities[feature]):
