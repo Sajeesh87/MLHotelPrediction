@@ -1,10 +1,13 @@
 import pandas as pd
 
 dataset_train = pd.read_csv('train.csv')
+dataset_train.drop(dataset_train.columns[[0]], axis=1, inplace=True)
+print(dataset_train)
+
 labelCount = {}
 labelsProbability = {}
 
-label_aggregation = dataset_train.groupby(dataset_train.hotel_market).size()
+label_aggregation = dataset_train.groupby(dataset_train.hotel_cluster).size()
 print(label_aggregation)
 
 for label, label_count in label_aggregation.iteritems():
@@ -24,9 +27,8 @@ for feature in list(dataset_train.columns.values):
             # count (feature=feature_value & class=class_value)
             feature_count = dataset_train[
                         (dataset_train[feature] == feature_value) &
-                        (dataset_train.hotel_market == class_label)] \
+                        (dataset_train.hotel_cluster == class_label)] \
                     .groupby(feature).size()
-                    
             if not (len(feature_count) == 1):
                 # print('feature: {}, value: {}, cluster: {}'.format(feature, feature_value, class_label))
                 feature_count = 0
@@ -37,9 +39,11 @@ for feature in list(dataset_train.columns.values):
             probability = float(feature_count + 1) / \
             float(labelCount[class_label] + len(labelCount))
             probabilities[feature][feature_value][class_label] = probability
-print(probabilities)
+            print(probabilities[feature])
 
-dataset_test = pd.read_csv('test.csv')
+dataset_test = pd.read_csv('train.csv')
+dataset_test.drop(dataset_test.columns[[0]], axis=1, inplace=True)
+dataset_test.drop(dataset_test.columns[[1]], axis=1, inplace=True)
 
 columns = dataset_test.columns.values
 predicted_labels = {}
