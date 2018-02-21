@@ -1,6 +1,5 @@
 #import libraries
 import pandas as pd
-#import numpy as np
 
 #importing dataset
 dataset_Destination = pd.read_csv('destinations.csv')
@@ -8,11 +7,23 @@ dataset_sample_submission = pd.read_csv('sample_submission.csv')
 dataset_train = pd.read_csv('test.csv')
 dataset_test = pd.read_csv('train.csv')
 
+#remove colums
+for col in dataset_test:
+    if(col in dataset_train):
+        pass
+    else:
+        del dataset_test[col]
+for col in dataset_train:
+    if(col in dataset_test):
+        pass
+    else:
+        del dataset_train[col]
+
 #split dependent and indepandent data
-X = dataset_train.iloc[:30000, 0:17]
-y = dataset_train.iloc[:30000, 17:].values
-X_test = dataset_test.iloc[:, 0:17]
-y_test = dataset_test.iloc[:, 17:].values
+X = dataset_train.iloc[:, :]
+y = dataset_train.iloc[:, 17].values
+X_test = dataset_test.iloc[:, :]
+y_test = dataset_test.iloc[:, 16].values
 
 #categorical data
 from sklearn.preprocessing import LabelEncoder#,OneHotEncoder
@@ -40,15 +51,17 @@ X = imputer_obj.transform(X)
 seed = 7
 
 #import algo
+import sklearn.metrics as met
 from sklearn.tree import DecisionTreeClassifier
-#from sklearn.naive_bayes import GaussianNB
+from sklearn.naive_bayes import GaussianNB
 # prepare models
 models = []
-#models.append(('NB', GaussianNB()))
+models.append(('NB', GaussianNB()))
 models.append(('CART', DecisionTreeClassifier()))
 
 # evaluate each model in turn
 for name,model in models:
     m = model
-    m.fit(X[:2000],y[:2000])
-    z = m.predict(X_test[:1])
+    m.fit(X,y)
+    y_pred = m.predict(X_test)
+    print(met.accuracy_score(y_test,y_pred))
