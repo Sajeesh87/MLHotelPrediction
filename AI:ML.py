@@ -73,7 +73,7 @@ bestAccuracy = 1
 # evaluate each model in turn
 for name,model in models:
     m = model
-    print("\n",name,"****processing")
+    print("\n",name,"**** processing ****")
     m.fit(X[30000:],y[30000:])
     y_pred = m.predict(X_test[10000:])
     if(met.accuracy_score(y_test[10000:],y_pred)<bestAccuracy):
@@ -84,7 +84,7 @@ for name,model in models:
     
 print("\nBest model is",bestModelName,"With Accuracy",bestAccuracy)
 m = bestModel
-print("\n",bestModelName,"****best model processing")
+print("\n",bestModelName,"**** best model processing ****")
 m.fit(X,y)
 y_pred = m.predict(X_test)
 #print(name,"Accuracy Score",met.accuracy_score(y_test,y_pred))
