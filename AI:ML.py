@@ -83,10 +83,9 @@ for name,model in models:
     print("\n",name,"Accuracy Score",met.accuracy_score(y_test[10000:],y_pred))
     
 print("\nBest model is",bestModelName,"With Accuracy",bestAccuracy)
-m = bestModel
 print("\n",bestModelName,"**** best model processing ****")
-m.fit(X,y)
-y_pred = m.predict(X_test)
+bestModel.fit(X,y)
+#y_pred = m.predict(X_test)
 #print(name,"Accuracy Score",met.accuracy_score(y_test,y_pred))
     
 #alternate method to evalute algo
