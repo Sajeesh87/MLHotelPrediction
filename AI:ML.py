@@ -74,17 +74,18 @@ bestAccuracy = 1
 for name,model in models:
     m = model
     print("\n",name,"**** processing ****")
-    m.fit(X[30000:],y[30000:])
-    y_pred = m.predict(X_test[10000:])
-    if(met.accuracy_score(y_test[10000:],y_pred)<bestAccuracy):
-        bestModel = model
+    m.fit(X,y)
+    y_pred = m.predict(X_test[20000:])
+    if(met.accuracy_score(y_test[20000:],y_pred)<bestAccuracy):
+        bestModel = m
         bestModelName = name
-        bestAccuracy = met.accuracy_score(y_test[10000:],y_pred)
-    print("\n",name,"Accuracy Score",met.accuracy_score(y_test[10000:],y_pred))
+        bestAccuracy = met.accuracy_score(y_test[20000:],y_pred)
+    print("\n",name,"Accuracy Score",met.accuracy_score(y_test[20000:],y_pred))
     
 print("\nBest model is",bestModelName,"With Accuracy",bestAccuracy)
-print("\n",bestModelName,"**** best model processing ****")
-bestModel.fit(X,y)
+finalpred = bestModel.predict(X_test[:100])
+print(finalpred)
+print(y_test[:100])
 #y_pred = m.predict(X_test)
 #print(name,"Accuracy Score",met.accuracy_score(y_test,y_pred))
     
