@@ -58,24 +58,40 @@ seed = 7
 
 #import algo for model selection
 import sklearn.metrics as met
-from sklearn import model_selection as mod_sel
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.naive_bayes import GaussianNB
+from sklearn.neighbors import KNeighborsClassifier
 
 # prepare models
 models = []
 models.append(('Naive Bayes', GaussianNB()))
 models.append(('Decision Tree', DecisionTreeClassifier()))
+models.append(('KNN',KNeighborsClassifier(n_neighbors=3)))
+
+bestAccuracy = 1
 
 # evaluate each model in turn
 for name,model in models:
     m = model
-    print(name,"****processing")
+    print("\n",name,"**** processing ****")
     m.fit(X,y)
-    y_pred = m.predict(X_test)
-    print(name,"Accuracy Score",met.accuracy_score(y_test,y_pred))
+    y_pred = m.predict(X_test[20000:])
+    if(met.accuracy_score(y_test[20000:],y_pred)<bestAccuracy):
+        bestModel = m
+        bestModelName = name
+        bestAccuracy = met.accuracy_score(y_test[20000:],y_pred)
+    print("\n",name,"Accuracy Score",met.accuracy_score(y_test[20000:],y_pred))
+    
+print("\nBest model is",bestModelName,"With Accuracy",bestAccuracy)
+finalpred = bestModel.predict(X_test[:100])
+print(finalpred)
+print(y_test[:100])
+#y_pred = m.predict(X_test)
+#print(name,"Accuracy Score",met.accuracy_score(y_test,y_pred))
     
 #alternate method to evalute algo
+'''takes longer time to execute
+from sklearn import model_selection as mod_sel
 results = []
 names = []
 scoring = 'accuracy'
@@ -87,3 +103,4 @@ for name, model in models:
     names.append(name)
     msg = "%s: %f (%f)" % (name, cv_results.mean(), cv_results.std())
     print(msg)
+'''
