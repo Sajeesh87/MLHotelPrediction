@@ -38,7 +38,6 @@ for feature in list(dtrain.columns.values):
             probability = float(feature_count + 1) / \
             float(labelCount[class_label] + len(labelCount))
             probabilities[feature][feature_value][class_label] = probability
-            print(probabilities[feature])
 
 dtest = pd.read_csv('test.csv')
 dtest.drop(dtest.columns[[0]], axis=1, inplace=True)
